@@ -1,17 +1,19 @@
 pipeline {
     agent any
     stages {
-    stage('Fetch and maven build') {
-  agent {
-    docker {
-        image 'node:16.13.1-alpine'
-    }
-  }
-
+        stage('Build') {
+            agent {
+                docker {
+                    image 'ebogachev/dockerimage:latest'
+                    registryCredentialsId 'dockerhub'
+                    args '-v /var/run/docker.sock:/var/run/docker.sock -u root:root'
+                    reuseNode true
+                }
+            }
             steps {
                 git 'https://github.com/ebogachev/boxfuse.git'
-                sh "mvn package"
+                sh "mvn clean package"
             }
-  }
-}
+        }
+    }
 }
