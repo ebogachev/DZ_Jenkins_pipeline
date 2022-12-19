@@ -34,9 +34,11 @@ pipeline {
         stage('Deploy on prod'){
             steps{
                 sshagent(credentials: ['9fe5a7ca-caf4-4a7b-84b7-a1d136596a24']) {
-                 sh 'ssh -o StrictHostKeyChecking=no -l root 158.160.4.156'
-                 sh   "docker pull ebogachev/boxfuse"
-                 sh   "docker run -p 80:8080 -d ebogachev/boxfuse"  
+                 sh '''
+                 ssh -o StrictHostKeyChecking=no -l root 84.201.138.176
+                 docker pull ebogachev/boxfuse
+                 docker run -p 80:8080 -d ebogachev/boxfuse
+                 '''
                 }
             }
         }
